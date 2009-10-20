@@ -1,6 +1,6 @@
 ---
 name: Supervisor
-version: 0.01
+version: 0.02
 author:
   - 'Kevin L. Esteb <kesteb@wsipc.org>'
 abstract: Base environment for the Supervisor
@@ -19,7 +19,7 @@ configure_requires:
 provides:
   Supervisor::Base:
     file: lib/Supervisor/Base.pm
-    version: 0.01
+    version: 0.02
   Supervisor::Class:
     file: lib/Supervisor/Class.pm
   Supervisor::Constants:

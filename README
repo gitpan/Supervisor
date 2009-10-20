@@ -1,4 +1,4 @@
-Supervisor version 0.01
+Supervisor version 0.02
 =======================
 
 The Supervisor modules provide a simple framework to monitor and control
@@ -25,6 +25,7 @@ These modules requires these other modules and libraries:
     DateTime
     File::Pid
     Set::Light
+    Config::IniFiles
 
 SUPPORT AND DOCUMENTATION
 

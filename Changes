@@ -3,3 +3,6 @@ Revision history for Supervisor
 0.01    21-Sep-2009 K.Esteb
         First version, released on an unsuspecting world.
 
+0.02    20-Oct-2009 K.Esteb
+        Added Config::IniFiles as a dependency
+	
