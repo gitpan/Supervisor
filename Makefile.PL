@@ -6,6 +6,7 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Supervisor/Base.pm',
           'PREREQ_PM' => {
                            'Badger' => '0.06',
+                           'Config::IniFiles' => '2.39',
                            'DateTime' => '0.4501',
                            'File::Pid' => 0,
                            'POE' => '1.007',

@@ -1,6 +1,6 @@
 ---
 name: Supervisor
-version: 0.02
+version: 0.03
 author:
   - 'Kevin L. Esteb <kesteb@wsipc.org>'
 abstract: Base environment for the Supervisor
@@ -9,6 +9,7 @@ resources:
   license: http://dev.perl.org/licenses/
 build_requires:
   Badger: 0.06
+  Config::IniFiles: 2.39
   DateTime: 0.4501
   File::Pid: 0
   POE: 1.007
@@ -19,7 +20,7 @@ configure_requires:
 provides:
   Supervisor::Base:
     file: lib/Supervisor/Base.pm
-    version: 0.02
+    version: 0.03
   Supervisor::Class:
     file: lib/Supervisor/Class.pm
   Supervisor::Constants:

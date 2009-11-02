@@ -6,3 +6,6 @@ Revision history for Supervisor
 0.02    20-Oct-2009 K.Esteb
         Added Config::IniFiles as a dependency
 	
+0.03    01-Nov-2009 K.Esteb
+        Apprently the above change got lost with the upload to CPAN.
+	
