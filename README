@@ -1,4 +1,4 @@
-Supervisor version 0.02
+Supervisor version 0.04
 =======================
 
 The Supervisor modules provide a simple framework to monitor and control
@@ -21,6 +21,7 @@ DEPENDENCIES
 These modules requires these other modules and libraries:
 
     POE
+    JSON
     Badger
     DateTime
     File::Pid

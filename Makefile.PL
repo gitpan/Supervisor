@@ -9,6 +9,7 @@ WriteMakefile
                            'Config::IniFiles' => '2.39',
                            'DateTime' => '0.4501',
                            'File::Pid' => 0,
+                           'JSON' => '2.15',
                            'POE' => '1.007',
                            'Set::Light' => '0.04',
                            'Test::More' => 0

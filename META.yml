@@ -1,6 +1,6 @@
 ---
 name: Supervisor
-version: 0.03
+version: 0.04
 author:
   - 'Kevin L. Esteb <kesteb@wsipc.org>'
 abstract: Base environment for the Supervisor
@@ -12,6 +12,7 @@ build_requires:
   Config::IniFiles: 2.39
   DateTime: 0.4501
   File::Pid: 0
+  JSON: 2.15
   POE: 1.007
   Set::Light: 0.04
   Test::More: 0
@@ -20,7 +21,7 @@ configure_requires:
 provides:
   Supervisor::Base:
     file: lib/Supervisor/Base.pm
-    version: 0.03
+    version: 0.04
   Supervisor::Class:
     file: lib/Supervisor/Class.pm
   Supervisor::Constants:

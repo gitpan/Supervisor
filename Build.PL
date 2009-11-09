@@ -15,6 +15,7 @@ my $builder = Module::Build->new(
         'Set::Light'       => '0.04',
         'Test::More'       => 0,
         'Config::IniFiles' => '2.39',
+        'JSON'             => '2.15',
     },
     add_to_cleanup      => [ 'Supervisor-*' ],
     create_makefile_pl => 'traditional',

@@ -9,3 +9,6 @@ Revision history for Supervisor
 0.03    01-Nov-2009 K.Esteb
         Apprently the above change got lost with the upload to CPAN.
 	
+0.04    09-Nov-2009 K.Esteb
+        Apprently I forgot about JSON. This is now a dependency.
+        
