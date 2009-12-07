@@ -1,6 +1,6 @@
 package Supervisor::Process;
 
-my $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 
@@ -73,7 +73,7 @@ sub start_process {
 
         $data->{retries}++;
         $self->log->info("pid = " . $self->wheel->PID);
-        $kernel->delay('_start_process_timeout', $self->start_wait_secs, $data);
+        $kernel->delay_add('_start_process_timeout', $self->start_wait_secs, $data);
 
     } else {
 
@@ -98,7 +98,32 @@ sub stop_process {
 
         $data->{retries}++;
         kill($self->stop_signal, $self->wheel->PID);
-        $kernel->yield('_stop_process_timeout', $data);
+        $kernel->delay_add('_stop_process_timeout', $self->stop_wait_secs, $data);
+
+    } else {
+
+        $self->status(STOP);
+        delete $self->{wheel};
+        $data->{status} = STOP;
+        $kernel->post($supervisor, 'child_error', $data);
+
+    }
+
+}
+
+sub kill_process {
+    my ($kernel, $self, $data) = @_[KERNEL,OBJECT,ARG0];
+
+    my $rc;
+    my $supervisor = $self->supervisor;
+
+    $data->{name} = $self->name;
+
+    if ($data->{retries} < $self->stop_retries) {
+
+        $data->{retries}++;
+        kill(9, $self->wheel->PID);
+        $kernel->delay_add('_stop_process_timeout', $self->stop_wait_secs, $data);
 
     } else {
 
@@ -248,8 +273,7 @@ sub killme {
 
         $self->action(KILLME);
         $self->log->info("killing the process");
-        kill(9, $self->wheel->PID);
-        $poe_kernel->yield($session_id, '_stop_process_timeout', $data);
+        $poe_kernel->post($session_id, 'kill_process', $data);
 
     } else {
 
@@ -274,6 +298,7 @@ sub _initialize {
     $kernel->state('_get_stdout', $self);
     $kernel->state('_get_stderr', $self);
     $kernel->state('_child_exit', $self);
+    $kernel->state('kill_process', $self);
     $kernel->state('stop_process', $self);
     $kernel->state('stat_process', $self);
     $kernel->state('start_process', $self);
@@ -359,21 +384,37 @@ sub _child_exit {
 sub _start_process_timeout {
     my ($kernel, $self, $data) = @_[KERNEL,OBJECT,ARG0];
 
+    my $wheel;
     my $supervisor = $self->supervisor;
 
     $data->{name} = $self->name;
+    $self->log->debug("entering _start_process_timeout()");
 
-    if (kill(0, $self->wheel->PID)) {
+    if ($wheel = $self->wheel) {
 
-        $self->status(START);
-        $kernel->sig_child($self->wheel->PID, '_child_exit');
-        $kernel->post($supervisor, 'child_started', $data);
+        if (kill(0, $wheel->PID)) {
+
+            $self->log->debug("process is alive, telling the supervisor");
+
+            $self->status(START);
+            $kernel->sig_child($self->wheel->PID, '_child_exit');
+            $kernel->post($supervisor, 'child_started', $data);
+
+        } else {
+
+            $self->log->debug("process is still not alive, retrying the start");
+            $kernel->delay_add('start_process', $self->start_wait_secs, $data);
+
+        }
 
     } else {
 
-        $kernel->delay('start_process', $self->start_wait_secs, $data);
+        $self->log->debug("process didn't initialize, retrying the start");
+        $kernel->delay_add('start_process', $self->start_wait_secs, $data);
 
     }
+
+    $self->log->debug("leaving _start_process_timeout()");
 
 }
 
@@ -381,18 +422,37 @@ sub _stop_process_timeout {
     my ($kernel, $self, $data) = @_[KERNEL,OBJECT,ARG0];
 
     my $rc;
+    my $wheel;
     my $supervisor = $self->supervisor;
 
-    if (kill(0, $self->wheel->PID)) {
+    $self->log->debug("entering _stop_process_timeout()");
+
+    if ($wheel = $self->wheel) {
+
+        if (kill(0, $wheel->PID)) {
+
+            $self->log->debug('process is dead, telling the supervisor');
+
+            $self->status(STOP);
+            $kernel->post($supervisor, 'child_stopped', $data);
+
+        } else {
+
+            $self->log->debug('process is still alive, retrying the stop');
+            $kernel->delay_add('stop_process', $self->stop_wait_secs, $data);
+
+        }
+
+    } else {
+
+        $self->log->debug('process is gone, telling the supervisor');
 
         $self->status(STOP);
         $kernel->post($supervisor, 'child_stopped', $data);
 
-    } else {
-
-        $kernel->delay('stop_process', $self->stop_wait_secs, $data);
-
     }
+
+    $self->log->debug("leaving _stop_process_timeout()");
 
 }
 

@@ -1,6 +1,7 @@
 package Supervisor::RPC::Server;
 
-my $VERSION = '0.01';
+our $VERSION = '0.02';
+our $DEBUG = 0 unless defined $DEBUG;
 
 use POE;
 use Socket;

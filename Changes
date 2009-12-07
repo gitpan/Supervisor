@@ -7,8 +7,19 @@ Revision history for Supervisor
         Added Config::IniFiles as a dependency
 	
 0.03    01-Nov-2009 K.Esteb
-        Apprently the above change got lost with the upload to CPAN.
+        Apparently the above change got lost with the upload to CPAN.
 	
 0.04    09-Nov-2009 K.Esteb
-        Apprently I forgot about JSON. This is now a dependency.
+        Apparently I forgot about JSON. This is now a dependency. Easy to
+          miss dependenices when all your test environments already have 
+          those modules installed.
         
+0.05    25-Nov-2009 K.Esteb
+        Added support for a "debug" switch in supervisor.
+        "debug" will now turn on debug messages within the various log files.
+        Changed the yield() to delay_add() in start() of Process.pm.
+        Added checks for the wheel in _start_process_timeout() and
+          _stop_process_timeout() of Process.pm
+        Added a kill_process event and corresponding kill_process() method to
+          Process.pm.
+          

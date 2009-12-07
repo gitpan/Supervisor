@@ -1,6 +1,6 @@
 package Supervisor::ProcessFactory;
 
-my $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 
@@ -58,6 +58,7 @@ sub load {
                 ReloadSignal  => $cfg->val($section, 'reload-signal', 'HUP'),
                 Logfile       => $cfg->val($section, 'logfile', '/dev/stdout'),
                 Supervisor    => $params->{'Supervisor'},
+                Debug         => $params->{'Debug'},
             );
 
             push(@processes, $process);

@@ -13,6 +13,7 @@
 #              --address...The address to bind too
 #              --config....The config file to use
 #              --pidfile...The filename to use for the pid file
+#              --debug.....Turn on debugging output
 #
 # RETURNS:     0 - on success
 #              1 - on failure
@@ -20,14 +21,20 @@
 # Version      Author                                              Date
 # -------      ----------------------------------------------      -----------
 # 0.01         Kevin Esteb                                         11-Sep-2009
+#              Initial release
+#
+# 0.02         Kevin Esteb                                         25-Nov-2009
+#              Implemented the debug switch
 #
 # ============================================================================
 #
 
+use lib '../lib';
+
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 # ---------------------------------------------------------------------
 # Required Modules
@@ -42,7 +49,7 @@ use Supervisor::ProcessFactory;
 use Supervisor::Class
   version   => $VERSION,
   base      => 'Supervisor::Base',
-  constants => 'DEFAULT_PORT DEFAULT_ADDRESS',
+  constants => 'DEFAULT_PORT DEFAULT_ADDRESS TRUE FALSE',
   constant => {
       handler => __PACKAGE__
   }
@@ -53,6 +60,7 @@ use Supervisor::Class
 # ---------------------------------------------------------------------
 
 my $pid;
+my $debug;
 my $pidfile;
 
 my $port = DEFAULT_PORT;
@@ -72,6 +80,7 @@ sub setup {
         'port=s'    => \$port,
         'address=s' => \$host,
         'pidfile=s' => \$pidfile,
+        'debug'     => \$debug,
     );
 
     if ($help) {
@@ -142,9 +151,11 @@ main: {
         $supervisor = Supervisor::Controller->new(
             Name => 'Supervisor',
             Logfile => '/dev/stdout',
+            Debug => defined($debug) ? TRUE : FALSE,
             Processes => Supervisor::ProcessFactory->load(
                 Config => $config,
                 Supervisor => 'Supervisor',
+                Debug => defined($debug) ? TRUE : FALSE,
             ),
             RPC => Supervisor::RPC::Server->new(
                 Name => 'RPC',

@@ -1,6 +1,6 @@
 package Supervisor::Session;
 
-my $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 use POE;
@@ -10,7 +10,7 @@ use Supervisor::Class
   base      => 'Supervisor::Base',
   utils     => 'weaken',
   constants => ':all',
-  accessors => 'session log',
+  accessors => 'session log debugx',
   mutators  => 'status'
 ;
 
@@ -47,12 +47,13 @@ sub init {
 
     $self->status(STOP);
 
+    $self->{debugx} = $self->config('Debug') || FALSE;
     $self->{log} = Supervisor::Log->new(
         info     => 1,
         warn     => 1,
         error    => 1,
         fatal    => 1,
-        debug    => 0,
+        debug    => $self->debugx,
         system   => $self->config('Name'),
         filename => $self->config('Logfile'),
     );

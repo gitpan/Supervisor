@@ -1,9 +1,8 @@
 package Supervisor::Controller;
 
-my $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
-
 use POE;
 
 use Supervisor::Class
@@ -22,6 +21,7 @@ use Supervisor::Class
     dead     => "%s is not running",
     status   => "%s is %s",
     restart  => "attempting to restart %s",
+    checking => "checking for running sessions",
     killing  => "killing %s",
     stopping => "stopping %s session",
     shutdown => "shutting down with the %s signal",
@@ -74,7 +74,7 @@ sub check_sessions {
     my $running = TRUE;
     my $processes = $self->processes;
 
-    $self->log->info("checking for running sessions");
+    $self->log->info($self->message('checking'));
 
     foreach my $process (@$processes) {
 
@@ -93,7 +93,7 @@ sub check_sessions {
 
     } else {
 
-        $kernel->delay('check_session', 5);
+        $kernel->delay_add('check_session', 5);
 
     }
 
@@ -180,7 +180,7 @@ sub child_exited {
 
         }
 
-        $kernel->delay('check_sessions', 5);
+        $kernel->delay_add('check_sessions', 5);
 
     } else {
 
@@ -423,8 +423,8 @@ sub _initialize {
     $kernel->sig(QUIT => 'handle_signals');
     $kernel->sig(ABRT => 'handle_signals');
 
-    $self->{rpc}        = $self->config('RPC');
-    $self->{processes}  = $self->config('Processes');
+    $self->{rpc}       = $self->config('RPC');
+    $self->{processes} = $self->config('Processes');
 
 }
 

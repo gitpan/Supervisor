@@ -1,6 +1,6 @@
 package Supervisor::Base;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Supervisor::Class
   base     => 'Badger::Base',
