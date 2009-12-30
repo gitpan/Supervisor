@@ -86,6 +86,7 @@ do.
  Badger::Log
  Badger::Log::File
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

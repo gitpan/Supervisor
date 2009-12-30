@@ -474,6 +474,7 @@ a message is sent back to the client.
 
 =head1 SEE ALSO
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

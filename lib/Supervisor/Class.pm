@@ -33,6 +33,7 @@ and utiltiy functions that are needed by the Supervisor environment.
 
  Badger::Class
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

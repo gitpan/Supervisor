@@ -191,6 +191,7 @@ This method should perform cleanup actions for the session.
 
 =head1 SEE ALSO
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

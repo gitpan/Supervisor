@@ -9,6 +9,7 @@ Changes
 init.d/supervisor.debian
 init.d/supervisor.rhel
 init.d/supervisor.suse
+lib/Supervisor.pm
 lib/Supervisor/Base.pm
 lib/Supervisor/Class.pm
 lib/Supervisor/Constants.pm

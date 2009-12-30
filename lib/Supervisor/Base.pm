@@ -1,6 +1,6 @@
 package Supervisor::Base;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Supervisor::Class
   base     => 'Badger::Base',
@@ -29,69 +29,19 @@ __END__
 
 =head1 NAME
 
-Supervisor::Base - Base environment for the Supervisor
+Supervisor::Base - The base environment for the Supervisor
 
 =head1 SYNOPSIS
+
+ use Supervisor::Class
+   base => 'Supervisor::Base'
+ ;
+
+=head1 DESCRIPTION
 
 This is the base module for the Supervisor environmnet. It provides 
 some global error messages and one method to retrieve config values. It also
 inherits all the properties of Badger::Base.
-
-=head1 DESCRIPTION
-
-A supervisor is a process that controls other processes. One of the most well
-known ones is /sbin/init, which is ran by the *nix kernel to set up the initial
-environment. Init is also used to monitor and keep processes running when 
-they exit. 
-
-While this supervisor is no replacement for init, it does share some of those
-characteristics. A daemon that runs in the background, monitoring a series of 
-processes, restarting them should they exit. It also has a command line utility
-to start, stop, stat and reload a monitored process.
-
-To do this, the supervisor is broken up into three parts. Each part is 
-represented by an object. Each object is a based on a POE session and the 
-events that they can respond too. 
-
-One part has the concept of a managed process. It contains the neccessary
-methods and events to control a process. When a process exits, an event is 
-generated and sent to the supervisor.
-
-A second part has the ability to allow access from external utilities to the
-managed processes. This allows utilities to start, stop, stat and/or reload
-managed processes. 
-
-And thirdly, there is a part that controls this interaction between the 
-managed processes, external events and the neccesity of keeping those processes 
-running.
-
-So to do all this, the three parts are broken out over several modules. 
-
-Basic functionality is provided by these modules.
-
- Supervisor::Base      - sets version number and provides documentation
- Supervisor::Class     - defines the constants and common utilty functions
- Supervisor::Constants - provides uniform constants for the environment
- Supervisor::Log       - provides a common logging interface
- Supervisor::Session   - provides a base POE session
- Supervisor::Utils     - provides common utility functions
-
-Process management is provided by these modules:
-
- Supervisor::Process        - base module for a managed process
- Supervidor::ProcessFactory - loads multiple processes from a config file
-
-The external interface is provided by these modules:
-
- Supervisor::RPC::Server    - provide an interface to the external world
- Supervisor::RPC::Client    - used by external world to communcicate
-
-The internal interface between processes and the external world:
-
- Supervisor::Controller     - controls the processes and external access
-
-These modules all combined togther make a supervisor that will keep a process
-running and allow control of that process from external utilties. 
 
 =head1 ACCESSORS
 
@@ -107,6 +57,7 @@ This method is used to return items from the interal config cache.
 
  Badger::Base
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

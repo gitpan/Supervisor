@@ -3,6 +3,7 @@
 use Test::More ;
 
 my @modules = qw( 
+    Supervisor
     Supervisor::Base 
     Supervisor::Class 
     Supervisor::Constants
@@ -19,4 +20,4 @@ my @modules = qw(
 plan(tests => scalar(@modules));
 use_ok($_) for @modules;
 
-diag( "Testing Supervisor $Supervisor::Base::VERSION, Perl $], $^X" );
+diag( "Testing Supervisor $Supervisor::VERSION, Perl $], $^X" );

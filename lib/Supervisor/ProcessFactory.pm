@@ -28,6 +28,7 @@ sub load {
     my @sections;
     my @processes;
     my $env = env_dump();
+    my $logfile = $params->{'Logfile'} || '/dev/stdout';
     my $ex = 'supervisor.processfactory.load';
 
     if ($cfg = Config::IniFiles->new(-file => $params->{'Config'})) {
@@ -56,7 +57,7 @@ sub load {
                 StartRetries  => $cfg->val($section, 'start-retries', '5'),
                 StartWaitSecs => $cfg->val($section, 'start-wait-secs', '10'),
                 ReloadSignal  => $cfg->val($section, 'reload-signal', 'HUP'),
-                Logfile       => $cfg->val($section, 'logfile', '/dev/stdout'),
+                Logfile       => $cfg->val($section, 'logfile', $logfile),
                 Supervisor    => $params->{'Supervisor'},
                 Debug         => $params->{'Debug'},
             );
@@ -245,6 +246,7 @@ Logfile parameter.
 
 =head1 SEE ALSO
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

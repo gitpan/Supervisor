@@ -13,6 +13,7 @@
 #
 
 PIDFILE="/var/run/supervisor.pid"
+LOGFILE="/var/log/supervisor.log"
 CONFIGS="/etc/supervisor.ini"
 USER="root"
 NAME="supervisor"
@@ -24,6 +25,7 @@ if [ -f /etc/sysconfig/supervisor ];then
 fi
 
 PROGRAM="/usr/local/bin/$NAME"
+PARAMS="--pidfile $PIDFILE --config $CONFIGS >> $LOGFILE 2>&1 &"
 
 # integrate the rhel functions
 
@@ -36,7 +38,7 @@ PROGRAM="/usr/local/bin/$NAME"
 fn_start() {
 
     echo -n $"Starting supervisor: "
-    daemon --user $USER $PROGRAM "--pidfile $PIDFILE --config $CONFIGS 2>&1 &"
+    daemon --user $USER $PROGRAM "$PARAMS"
     RETVAL=$?
     echo ""
     [ "$RETVAL" -eq 0 ] && touch /var/lock/subsys/supervisor

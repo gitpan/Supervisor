@@ -1,4 +1,4 @@
-Supervisor version 0.05
+Supervisor version 0.07
 =======================
 
 The Supervisor modules provide a simple framework to monitor and control
@@ -33,7 +33,7 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc Supervisor::Base
+    perldoc Supervisor
 
 There is also sample supervisor and supctl programs in the bin directory 
 and sample startup scripts for Debian, RHEL and Novell SUSE in the 

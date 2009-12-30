@@ -530,6 +530,7 @@ This method starts the endless loop.
 
 =head1 SEE ALSO
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

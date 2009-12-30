@@ -252,6 +252,7 @@ the name of the process. It will return "reloaded".
 
 =head1 SEE ALSO
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

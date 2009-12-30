@@ -13,6 +13,7 @@
 #              --address...The address to bind too
 #              --config....The config file to use
 #              --pidfile...The filename to use for the pid file
+#              --logfile...The name of the log file
 #              --debug.....Turn on debugging output
 #
 # RETURNS:     0 - on success
@@ -26,6 +27,12 @@
 # 0.02         Kevin Esteb                                         25-Nov-2009
 #              Implemented the debug switch
 #
+# 0.03         Kevin Esteb                                         09-Dec-2009
+#              Implemented a logfile parameter. This is so I can
+#              define a logfile to use on Debian. The Debian
+#              start-stop-daemon command does not allow redirection
+#              of stdout and stderr.
+#
 # ============================================================================
 #
 
@@ -34,7 +41,7 @@ use lib '../lib';
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # ---------------------------------------------------------------------
 # Required Modules
@@ -65,6 +72,7 @@ my $pidfile;
 
 my $port = DEFAULT_PORT;
 my $host = DEFAULT_ADDRESS;
+my $logfile = '/dev/stdout';
 my $config = 'supervisor.ini';
 
 # ---------------------------------------------------------------------
@@ -80,6 +88,7 @@ sub setup {
         'port=s'    => \$port,
         'address=s' => \$host,
         'pidfile=s' => \$pidfile,
+        'logfile=s' => \$logfile,
         'debug'     => \$debug,
     );
 
@@ -125,12 +134,14 @@ Version: $VERSION
     $0 [--address] <address>
     $0 [--config] <filename>
     $0 [--pidfile] <filename>
-
+    $0 [--logfile] <filename>
+      
     --help......Display this simple help message.
     --port......The port to listen on (default 9505)
     --address...The address to bind too (default localhost)
     --config....The configuration file to use
     --pidfile...The name of the pid file to use
+    --logfile...The name of the log file to use (default /dev/stdout)
 
     Examples:
       $0 --help
@@ -150,18 +161,19 @@ main: {
 
         $supervisor = Supervisor::Controller->new(
             Name => 'Supervisor',
-            Logfile => '/dev/stdout',
+            Logfile => $logfile,
             Debug => defined($debug) ? TRUE : FALSE,
             Processes => Supervisor::ProcessFactory->load(
                 Config => $config,
                 Supervisor => 'Supervisor',
+                Logfile => $logfile,
                 Debug => defined($debug) ? TRUE : FALSE,
             ),
             RPC => Supervisor::RPC::Server->new(
                 Name => 'RPC',
                 Port => $port,
                 Address => $host,
-                Logfile => '/dev/stdout',
+                Logfile => $logfile,
                 Supervisor => 'Supervisor'
             )
         );

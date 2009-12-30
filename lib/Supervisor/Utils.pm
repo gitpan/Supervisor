@@ -172,6 +172,7 @@ Example:
 
  Badger::Utils
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants

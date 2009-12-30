@@ -112,6 +112,7 @@ Additionaly these can be exported by using :rpc.
 
  Badger::Constants
 
+ Supervisor
  Supervisor::Base
  Supervisor::Class
  Supervisor::Constants
