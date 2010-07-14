@@ -12,28 +12,30 @@
 ###
 #
 
-PIDFILE="/var/run/supervisor.pid"
-LOGFILE="/var/log/supervisor.log"
-CONFIGS="/etc/supervisor.ini"
 USER="root"
 NAME="supervisor"
+LCKFILE="/var/lock/subsys/$NAME"
+PIDFILE="/var/run/$NAME.pid"
+LOGFILE="/var/log/$NAME.log"
+CONFIGS="/etc/$NAME.ini"
 
 # integrate the overrides
 
-if [ -f /etc/sysconfig/supervisor ];then
-    . /etc/sysconfig/supervisor
+if [ -f /etc/sysconfig/$NAME ];then
+    . /etc/sysconfig/$NAME
 fi
 
 PROGRAM="/usr/local/bin/$NAME"
-PARAMS="--pidfile $PIDFILE --config $CONFIGS >> $LOGFILE 2>&1 &"
+PARAMS="--pidfile $PIDFILE --config $CONFIGS --logfile $LOGFILE &"
 
-# integrate the rhel functions
+# integrate the RHEL functions
 
 . /etc/init.d/functions
 
 # Some simple tests
 
 [[ -f $PROGRAM ]] || exit 0
+RETVAL=0
 
 fn_start() {
 
@@ -41,7 +43,7 @@ fn_start() {
     daemon --user $USER $PROGRAM "$PARAMS"
     RETVAL=$?
     echo ""
-    [ "$RETVAL" -eq 0 ] && touch /var/lock/subsys/supervisor
+    [ "$RETVAL" -eq 0 ] && touch $LCKFILE
 
     return $RETVAL
 
@@ -52,7 +54,7 @@ fn_stop() {
     echo -n $"Shutting down supervisor: "
     killproc $NAME
     RETVAL=$?
-    [ "$RETVAL" -eq 0 ] && rm -f /var/lock/subsys/supervisor
+    [ "$RETVAL" -eq 0 ] && rm -f $LCKFILE
     echo ""
 
     return $RETVAL
@@ -61,7 +63,7 @@ fn_stop() {
 
 fn_status() {
 
-    status -p $PIDFILE
+    status -p $PIDFILE $PROGRAM
     RETVAL=$?
 
     return $RETVAL

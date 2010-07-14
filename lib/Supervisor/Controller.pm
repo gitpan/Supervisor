@@ -12,19 +12,19 @@ use Supervisor::Class
   constants => ':all',
   accessors => 'processes rpc',
   messages => {
-    starting => "starting processes",
-    started  => "%s has started",
-    stopped  => "%s has stopped",
-    reloaded => "%s has reloaded",
-    exited   => "%s has exited",
-    alive    => "%s is running",
-    dead     => "%s is not running",
-    status   => "%s is %s",
-    restart  => "attempting to restart %s",
-    checking => "checking for running sessions",
-    killing  => "killing %s",
-    stopping => "stopping %s session",
-    shutdown => "shutting down with the %s signal",
+    starting  => "starting processes",
+    started   => "%s has started",
+    stopped   => "%s has stopped",
+    reloaded  => "%s has reloaded",
+    exited    => "%s has exited",
+    alive     => "%s is running",
+    dead      => "%s is not running",
+    status    => "%s is %s",
+    restart   => "attempting to restart %s",
+    checking  => "checking for running sessions",
+    killing   => "killing %s",
+    stopping  => "stopping %s session",
+    shutdown  => "shutting down with the %s signal",
     exit_code => "exit code: %s, was not recognized for %s. restarting not attempted",
   }
 ;
@@ -448,7 +448,7 @@ Supervisor::Controller - Controls the Superviors environment
 
  my $supervisor = Supervisor::Controller->new(
      Name => 'supervisor',
-     Logfile => '/dev/stdout',
+     Logfile => 'supervisor.log',
      Processes => Supervisor::ProcessFactory->load(
          Config => 'supervisor.ini',
          Supervisor => 'supervisor'
@@ -461,7 +461,7 @@ Supervisor::Controller - Controls the Superviors environment
 
  my $supervisor = Supervisor::Controller->new(
      Name => 'supervisor',
-     Logfile => '/dev/stdout',
+     Logfile => 'supervisor.log',
      Processes => Supervisor::ProcessFactory->load(
          Config => 'supervisor.ini',
          Supervisor => 'suprvisor',
@@ -470,7 +470,7 @@ Supervisor::Controller - Controls the Superviors environment
          Name => 'rpc',
          Port => 9505,
          Address => 127.0.0.1,
-         Logfile => '/dev/stdout'
+         Logfile => 'supervisor.log'
          Supervisor => 'supervisor',
      )
  );

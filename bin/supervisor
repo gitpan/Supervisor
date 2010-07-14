@@ -33,6 +33,9 @@
 #              start-stop-daemon command does not allow redirection
 #              of stdout and stderr.
 #
+# 0.04         Kevin Esteb                                         17-Jun-2010
+#              Performed some cleanup, switched over to Try::Tiny.
+#
 # ============================================================================
 #
 
@@ -41,13 +44,14 @@ use lib '../lib';
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # ---------------------------------------------------------------------
 # Required Modules
 # ---------------------------------------------------------------------
 
 use File::Pid;
+use Try::Tiny;
 use Getopt::Long;
 use Supervisor::Controller;
 use Supervisor::RPC::Server;
@@ -70,9 +74,9 @@ my $pid;
 my $debug;
 my $pidfile;
 
+my $logfile = '';
 my $port = DEFAULT_PORT;
 my $host = DEFAULT_ADDRESS;
-my $logfile = '/dev/stdout';
 my $config = 'supervisor.ini';
 
 # ---------------------------------------------------------------------
@@ -119,14 +123,17 @@ sub setup {
 
 sub usage {
 
+    my $Line;
     my ($Script) = ( $0 =~ m#([^\\/]+)$# );
-    my $Line = "-" x length( $Script );
+
+    $Script .= " - v$VERSION";
+    $Line = "-" x length( $Script );
+
     print << "EOT";
 
 $Script
 $Line
-supervisor - A procedure to monitor other processes.
-Version: $VERSION
+A procedure to monitor other processes.
 
   Usage:
     $0 [--help]
@@ -135,17 +142,17 @@ Version: $VERSION
     $0 [--config] <filename>
     $0 [--pidfile] <filename>
     $0 [--logfile] <filename>
-      
+
     --help......Display this simple help message.
     --port......The port to listen on (default 9505)
     --address...The address to bind too (default localhost)
     --config....The configuration file to use
     --pidfile...The name of the pid file to use
-    --logfile...The name of the log file to use (default /dev/stdout)
+    --logfile...The name of the log file to use (default stderr)
 
-    Examples:
-      $0 --help
-      $0 --config supervisor.ini
+  Examples:
+    $0 --help
+    $0 --config supervisor.ini
 
 EOT
 
@@ -153,9 +160,10 @@ EOT
 
 main: {
 
+    my $ec = 0;
     my $supervisor;
 
-    eval {
+    try {
 
         setup();
 
@@ -181,16 +189,18 @@ main: {
         $supervisor->run();
         $pid->remove() if (defined($pid));
 
-        exit 0;
+    } catch {
 
-    }; if (my $ex = $@) {
+        my $ex = $_;
 
         printf("%s\n", $ex);
         $pid->remove() if (defined($pid));
 
-        exit 1;
+        $ec = 1;
 
-    }
+    };
+
+    exit $ec;
 
 }
 

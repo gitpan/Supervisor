@@ -1,9 +1,9 @@
-Supervisor version 0.07
+Supervisor version 0.08
 =======================
 
 The Supervisor modules provide a simple framework to monitor and control
 other processes in a *nix like environment. It is partially based on
-Supervisord, Proc::Safetynet and POE::Component::Supervisor. For a varity 
+Supervisord, Proc::Safetynet and POE::Component::Supervisor. For a variety 
 of reason these solutions were not practical to install on systems that I had 
 to support. So I wrote my own.
 
@@ -11,10 +11,10 @@ INSTALLATION
 
 To install this module, run the following commands:
 
-	perl Build.PL
-	./Build
-	./Build test
-	./Build install
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
 
 DEPENDENCIES
 
@@ -39,7 +39,7 @@ There is also sample supervisor and supctl programs in the bin directory
 and sample startup scripts for Debian, RHEL and Novell SUSE in the 
 init.d directory.
 
-COPYRIGHT AND LICENCE
+COPYRIGHT AND LICENSE
 
 Copyright (C) 2009 Kevin L. Esteb
 

@@ -1,6 +1,6 @@
 package Supervisor::Process;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use 5.008;
 
@@ -20,7 +20,7 @@ use Supervisor::Class
   accessors  => 'name command priority start_wait_secs start_retries
                  stop_signal stop_wait_secs stop_retries reload_signal 
                  mask user group directory environment wheel autostart 
-                 autorestart exit_codes supervisor',
+                 autorestart exit_codes supervisor proc',
   mutators   => 'action exit_code exit_signal',
 ;
 
@@ -158,7 +158,7 @@ sub stat_process {
 
     $data->{name} = $self->name;
 
-    if (kill(0, $self->wheel->PID)) {
+    if ($self->proc->exists) {
 
         $data->{status} = ALIVE;
         $kernel->post($supervisor, 'child_status', $data);
@@ -392,7 +392,9 @@ sub _start_process_timeout {
 
     if ($wheel = $self->wheel) {
 
-        if (kill(0, $wheel->PID)) {
+        $self->{proc} = FS->dir(PROC_ROOT, $wheel->PID);
+
+        if ($self->proc->exists) {
 
             $self->log->debug("process is alive, telling the supervisor");
 
@@ -429,7 +431,7 @@ sub _stop_process_timeout {
 
     if ($wheel = $self->wheel) {
 
-        if (kill(0, $wheel->PID)) {
+        if (! $self->proc->exists) {
 
             $self->log->debug('process is dead, telling the supervisor');
 

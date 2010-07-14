@@ -31,8 +31,8 @@ if [ -f /etc/sysconfig/supervisor ];then
 fi
 
 PROGRAM="/usr/local/bin/$NAME"
-PARAMS="--pidfile $PIDFILE --config $CONFIGS"
-ARGS="-c / -s -l $LOGFILE -p $PIDFILE"
+PARAMS="--pidfile $PIDFILE --config $CONFIGS --logfile $LOGFILE"
+ARGS="-c / -s -p $PIDFILE"
 
 # integrate the suse functions
 

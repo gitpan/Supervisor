@@ -13,7 +13,7 @@ build_requires:
   Test::More: 0
 configure_requires:
   Module::Build: 0.36
-generated_by: 'Module::Build version 0.3601'
+generated_by: 'Module::Build version 0.3607'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,7 +22,7 @@ name: Supervisor
 provides:
   Supervisor:
     file: lib/Supervisor.pm
-    version: 0.07
+    version: 0.08
   Supervisor::Base:
     file: lib/Supervisor/Base.pm
     version: 0.06
@@ -37,7 +37,7 @@ provides:
     file: lib/Supervisor/Log.pm
   Supervisor::Process:
     file: lib/Supervisor/Process.pm
-    version: 0.02
+    version: 0.03
   Supervisor::ProcessFactory:
     file: lib/Supervisor/ProcessFactory.pm
     version: 0.02
@@ -54,4 +54,4 @@ provides:
     file: lib/Supervisor/Utils.pm
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.07
+version: 0.08
